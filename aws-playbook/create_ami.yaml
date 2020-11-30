@@ -1,0 +1,23 @@
+---
+  - name:  Provision AMI.
+    hosts:  localhost
+    connection:  local
+    gather_facts:  False
+    tags:  provisioning
+    vars:
+      instance_id: i-016c1771e90aac9a5
+      region:  ap-south-1
+    tasks:
+    - name: Basic AMI Creation, without waiting
+      ec2_ami:
+        aws_access_key:  "{{ access_key }}"
+        aws_secret_key:  "{{ secret_key }}"
+        region: "{{ region }}"
+        instance_id: "{{ instance_id }}"
+        wait: no
+        name: my_web_server
+        launch_permissions:
+          group_names: ['all']
+        tags:
+              Name: CloudEthix AMI
+              Service: Http_srvs
