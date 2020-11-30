@@ -1,0 +1,26 @@
+---
+  - name:  Provision Security Group.
+    hosts:  localhost
+    connection:  local
+    gather_facts:  False
+    tags:  provisioning
+    vars:
+      sg_name: my_ssh_http_sg
+      region:  ap-south-1
+    tasks:
+      - name:  CREATE NEW SECURITY GROUP.
+        ec2_group:
+          aws_access_key:  "{{ access_key }}"
+          aws_secret_key:  "{{ secret_key }}"
+          region:  "{{ region }}"
+          name:  "{{ sg_name }}"
+          description:  Security Group with ssh & http port allowed
+          rules:
+            - proto:  tcp
+              from_port:  22
+              to_port:  22
+              cidr_ip:  0.0.0.0/0
+            - proto:  tcp
+              from_port:  80
+              to_port:  80
+              cidr_ip:  0.0.0.0/0
