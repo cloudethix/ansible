@@ -1,0 +1,20 @@
+---
+  - name:  Provision ENI.
+    hosts:  localhost
+    connection:  local
+    gather_facts:  False
+    tags:  provisioning
+    vars:
+      instance_id: i-XXXXXXXXXXXXX
+      region: ap-south-1
+    tasks:
+    - name: Creating and attaching ENI
+      ec2_eni:
+        aws_access_key:  "{{ access_key }}"
+        aws_secret_key:  "{{ secret_key }}"
+        region: "{{ region }}"
+        instance_id: "{{ instance_id }}"
+        security_groups: sg-XXXXXXXXX
+        private_ip_address: XXX.XX.XX.XXX
+        subnet_id: subnet-XXXXXXX
+        state: present
