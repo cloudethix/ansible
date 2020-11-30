@@ -1,0 +1,29 @@
+---
+  - name:  Provision IAM User & Group.
+    hosts:  localhost
+    connection:  local
+    gather_facts:  False
+    tags:  provisioning
+    tasks:
+     - name: Create two new IAM users with API keys
+       iam:
+        aws_access_key:  "{{ access_key }}"
+        aws_secret_key:  "{{ secret_key }}"
+        iam_type: user
+        name: "{{ item }}"
+        state: present
+        access_key_state: create
+       with_items:
+        - zakir
+        - sandeep
+     - name: Create Two Groups, devops and developer
+       iam:
+        aws_access_key:  "{{ access_key }}"
+        aws_secret_key:  "{{ secret_key }}"
+        iam_type: group
+        name: "{{ item }}"
+        state: present
+       with_items:
+         - devops
+         - developer
+       register: new_groups
