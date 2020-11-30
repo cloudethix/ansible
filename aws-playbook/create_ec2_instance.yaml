@@ -1,0 +1,32 @@
+---
+  - name:  Provision EC2 Instance.
+    hosts:  localhost
+    connection:  local
+    gather_facts:  False
+    tags:  provisioning
+    vars:
+      image: ami-08f63db601b82ff5f
+      sg_name: my_ssh_http_sg
+      sg_id: sg-08c795117c0125e78
+      instance_type: t2.micro
+      region:  ap-south-1
+      keypair: aws_cloudethix
+      count: 1
+    tasks:
+      - name:  LAUNCH THE NEW EC2 INSTANCE.
+        ec2:
+         aws_access_key:  "{{ access_key }}"
+         aws_secret_key:  "{{ secret_key }}"
+         region:  "{{ region }}"
+         key_name: "{{ keypair }}"
+         instance_type: "{{ instance_type }}"
+         image: "{{ image }}"
+         wait: yes
+         group_id: "{{ sg_id }}"
+         count: "{{ count }}"
+         user_data: |
+               #!/bin/sh
+               yum install httpd -y
+               echo "Hello World & CloudEthix" >/var/www/html/index.html
+               systemctl start httpd
+               systemctl enable httpd
